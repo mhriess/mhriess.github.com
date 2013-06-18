@@ -3,7 +3,7 @@
 # ----------------------- #
 
 url: http://mhriess.github.com
-title: Serial Milk
+title: Serial Mikelk
 subtitle: Thoughts from a renowned pedestrian.
 author: Mike Riess
 simple_search: http://google.com/search
@@ -94,7 +94,7 @@ disqus_short_name:
 disqus_show_comment_count: false
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-41817929-1
 
 # Facebook Like
 facebook_like: false
