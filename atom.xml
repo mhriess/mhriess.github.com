@@ -1,98 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <meta name="author" content="Mike Riess">
-
-  
-  <meta name="description" content="RubyMotion is a neat tool that allows you to build iOS apps using Ruby code that eventually gets compiled into Objective-C. Unfortunately, there aren &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://mhriess.github.io">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='http://fonts.googleapis.com/css?family=Vollkorn:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-  
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-41817929-1']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-
-
-</head>
-
-<body   class="collapse-sidebar sidebar-footer" >
-  <header role="banner"><hgroup>
-  <h1><a href="/"></a></h1>
-</hgroup>
-
-</header>
-<div class="navi">
-<ul>
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/aboutme/">Author</a></li>
-</ul>
-</div>
-
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[]]></title>
+  <link href="http://mhriess.github.io/atom.xml" rel="self"/>
+  <link href="http://mhriess.github.io/"/>
+  <updated>2013-11-22T19:04:07-08:00</updated>
+  <id>http://mhriess.github.io/</id>
+  <author>
+    <name><![CDATA[Mike Riess]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2013/06/05/rubymotion-basics-login-screen/">RubyMotion Basics: Login Screen</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-<time datetime="2013-06-05T09:13:00-07:00" pubdate data-updated="true">Jun 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>RubyMotion is a neat tool that allows you to build iOS apps using Ruby code that eventually gets compiled into Objective-C. Unfortunately, there aren&rsquo;t a ton of blog posts demonstrating how to implement some of the more basic features of an iOS app using the Objective-C APIs, so hopefully this post will be of some use to aspiring RubyMotion developers. I&rsquo;m assuming basic or better Ruby knowledge, and I definitely recommend checking out <a href="http://rubymotion-tutorial.com/">this tutorial</a> for more of the basics.</p>
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Basics: Login Screen]]></title>
+    <link href="http://mhriess.github.io/blog/2013/06/05/rubymotion-basics-login-screen/"/>
+    <updated>2013-06-05T09:13:00-07:00</updated>
+    <id>http://mhriess.github.io/blog/2013/06/05/rubymotion-basics-login-screen</id>
+    <content type="html"><![CDATA[<p>RubyMotion is a neat tool that allows you to build iOS apps using Ruby code that eventually gets compiled into Objective-C. Unfortunately, there aren&rsquo;t a ton of blog posts demonstrating how to implement some of the more basic features of an iOS app using the Objective-C APIs, so hopefully this post will be of some use to aspiring RubyMotion developers. I&rsquo;m assuming basic or better Ruby knowledge, and I definitely recommend checking out <a href="http://rubymotion-tutorial.com/">this tutorial</a> for more of the basics.</p>
 
 <p>Let&rsquo;s get started building our login screen by making a new RM app:</p>
 
@@ -379,7 +305,7 @@
 
 <p>Finally, something of substance!</p>
 
-<p><img src="/images/2013-06-05-rubymotion-basics-login-screen/text_fields.png"></p>
+<p><img src="http://mhriess.github.io/images/2013-06-05-rubymotion-basics-login-screen/text_fields.png"></p>
 
 <p>However, you might notice that when we actually click into the text field, the keyboard pops up and blocks the field itself&hellip;not a great user experience. Let&rsquo;s get to work fixing that using animations, which will shift our view appropriately up and down so our user can see what they&rsquo;re typing.</p>
 
@@ -513,97 +439,7 @@
 
 
 <p>And that&rsquo;s it! Run rake and take the new login screen for a test drive. Here&rsquo;s <a href="https://github.com/mhriess/rubymotion_login">all the code in one place</a>.</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
-  
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/06/05/rubymotion-basics-login-screen/">RubyMotion Basics: Login Screen</a>
-      </li>
-    
-  </ul>
-</section>
-
-<section>
-  <h1>GitHub Repos</h1>
-  <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
-  </ul>
-  
-  <a href="https://github.com/mhriess">@mhriess</a> on GitHub
-  
-  <script type="text/javascript">
-    $(document).ready(function(){
-        if (!window.jXHR){
-            var jxhr = document.createElement('script');
-            jxhr.type = 'text/javascript';
-            jxhr.src = '/javascripts/libs/jXHR.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(jxhr, s);
-        }
-
-        github.showRepos({
-            user: 'mhriess',
-            count: 0,
-            skip_forks: true,
-            target: '#gh_repos'
-        });
-    });
-  </script>
-  <script src="/javascripts/github.js" type="text/javascript"> </script>
-</section>
-
-
-
-
-
-  
-</aside>
-
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Mike Riess -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
-
-</footer>
-  
-
-
-
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
-
-
-
-
-
-</body>
-</html>
+</feed>

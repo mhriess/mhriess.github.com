@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | ]]></title>
+  <link href="http://mhriess.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="http://mhriess.github.io/"/>
+  <updated>2013-11-22T19:04:07-08:00</updated>
+  <id>http://mhriess.github.io/</id>
+  <author>
+    <name><![CDATA[Mike Riess]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[RubyMotion Basics: Login Screen]]></title>
+    <link href="http://mhriess.github.io/blog/2013/06/05/rubymotion-basics-login-screen/"/>
+    <updated>2013-06-05T09:13:00-07:00</updated>
+    <id>http://mhriess.github.io/blog/2013/06/05/rubymotion-basics-login-screen</id>
+    <content type="html"><![CDATA[<p>RubyMotion is a neat tool that allows you to build iOS apps using Ruby code that eventually gets compiled into Objective-C. Unfortunately, there aren&rsquo;t a ton of blog posts demonstrating how to implement some of the more basic features of an iOS app using the Objective-C APIs, so hopefully this post will be of some use to aspiring RubyMotion developers. I&rsquo;m assuming basic or better Ruby knowledge, and I definitely recommend checking out <a href="http://rubymotion-tutorial.com/">this tutorial</a> for more of the basics.</p>
+
+<p>Let&rsquo;s get started building our login screen by making a new RM app:</p>
+
+<p><code>
+$ motion create login
+</code></p>
+
+<p>And don&rsquo;t forget to cd into the directory.</p>
+
+<p>First we&rsquo;ll get our app_delegate.rb into basic working order. But before that, a quick note: one issue I have with most of the RM samples I&rsquo;ve found is that they cram everything into app_delegate.rb. I haven&rsquo;t figured out if this is a reflection of how iOS apps are built in Objective-C, or just for the convenience of demoing code, but as Rubyists let&rsquo;s try and work toward better adherence to MVC.</p>
+
+<p>We&rsquo;re going to initialize a window to hold our views, then initialize our login controller and a navigation controller to manage it.</p>
+
+<p>```ruby
+def application(application,didFinishLaunchingWithOptions:launchOptions)
+  @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)</p>
+
+<p>  login_controller = LoginController.alloc.init</p>
+
+<p>  @navigationController = UINavigationController.alloc.initWithRootViewController(login_controller)</p>
+
+<p>  @window.rootViewController = @navigationController
+  @window.makeKeyAndVisible</p>
+
+<p>  true
+end
+```</p>
+
+<p>If you rake now, the compiler will complain since we haven&rsquo;t actually created our login controller, so let&rsquo;s go ahead and make one in app/controllers:</p>
+
+<p><code>ruby
+class LoginController &lt; UIViewController
+end
+</code></p>
+
+<p>This will get us&hellip; a blank screen. Exciting! Time to start on our login. We&rsquo;ll start by overriding the viewDidLoad method, a UIViewController callback that gets called after a controller&rsquo;s view is loaded into memory. Inside it, we&rsquo;ll add a subview to the root view that&rsquo;ll hold our text fields and login button.</p>
+
+<p>```ruby
+def viewDidLoad
+  super</p>
+
+<p>  # let&rsquo;s give it a title while we&rsquo;re at it
+  self.title = &ldquo;Login&rdquo;</p>
+
+<p>  # initialize the view with the whole screen as the frame
+  @login_view = LoginView.alloc.initWithFrame(UIScreen.mainScreen.bounds)   # add our new view as a subview of the root view   self.view.addSubview(@login_view)</p>
+
+<p>  true
+end
+```</p>
+
+<p>Again our compiler will complain here because we haven&rsquo;t defined our LoginView, let&rsquo;s do that now in app/views:</p>
+
+<p><code>ruby
+class LoginView &lt; UIView
+end
+</code></p>
+
+<p>Before we move on, I want to introduce Teacup, a handy gem that allows you to extract some of the verbose aesthetics related methods into stylesheets. The easiest way to do this is with bundler. In your rakefile:</p>
+
+<p>```ruby
+require &lsquo;motion/project/template/ios&rsquo;</p>
+
+<h1>Add these lines:</h1>
+
+<p>require &lsquo;bundler&rsquo;</p>
+
+<p>Bundler.require
+```</p>
+
+<p>Then create a Gemfile in the root of your app and add:</p>
+
+<p>```ruby
+source &lsquo;<a href="https://rubygems.org">https://rubygems.org</a>&rsquo;</p>
+
+<p>gem &lsquo;rake&rsquo;
+gem &lsquo;teacup&rsquo;
+```</p>
+
+<p>And run bundle on the command line.</p>
+
+<p><code>
+$ bundle
+</code></p>
+
+<p>Let&rsquo;s take teacup out for a spin. Similar to the controller&rsquo;s viewDidLoad method, we override the view&rsquo;s initWithFrame method to work our own subview and styling elements in. Let&rsquo;s start by setting up a white background. In the view:</p>
+
+<p>```ruby
+def initWithFrame(rect)
+  super.tap do</p>
+
+<pre><code># tell teacup which stylesheet to use
+self.stylesheet = :login_stylesheet
+# tell teacup which style to apply to the view itself
+self.stylename = :root
+</code></pre>
+
+<p>  end</p>
+
+<p>  self
+end
+```</p>
+
+<p>Now let&rsquo;s setup our stylesheet in app/styles:</p>
+
+<p>```ruby
+Teacup::Stylesheet.new :login_stylesheet do
+  style :root,</p>
+
+<pre><code>backgroundColor: UIColor.whiteColor
+</code></pre>
+
+<p>end
+```</p>
+
+<p>Ok! We finally have our blank white screen! Let&rsquo;s get started by adding a container for our login interface. Teacup provides a simple DSL to implement and scaffold views. We&rsquo;re going to initialize a new UIView object to act as our container, then set its dimensions in our stylesheet. The subview command (which Teacup provides) accepts an object and a symbol that points to the appropriate &lsquo;styles&rsquo; to add to that object, as defined by the stylesheet.</p>
+
+<p>``` ruby</p>
+
+<h1>in the view</h1>
+
+<p>def initWithFrame(rect)
+  super.tap do</p>
+
+<pre><code># ...code ommitted
+self.stylename = :root
+
+@container = subview(UIView, :login_container)
+</code></pre>
+
+<p>  end</p>
+
+<p>  self
+end</p>
+
+<h1>in the stylesheet</h1>
+
+<p>Teacup::Stylesheet.new :login_stylesheet do
+  style :root,</p>
+
+<pre><code>backgroundColor: UIColor.whiteColor
+</code></pre>
+
+<p>  # styles for our new login container:
+  style :login_container,</p>
+
+<pre><code>frame: [[70, app_size.height / 2 - 45],
+  [180, 108]]
+</code></pre>
+
+<p>end
+```</p>
+
+<p>At this point, launching our app with rake will show no visible changes, however if you hold down the command key and mouse over the middle of the screen, a red box, our container, should be highlighted. It&rsquo;s also worth taking a second to decode what we&rsquo;re doing to set the position and dimensions of our frame in the stylesheet. A view&rsquo;s location is defined relative to its superview- in this case the entire window since that&rsquo;s what we passed into the initWithFrame method. The first array represent the x/y coordinates of the top left point of our container, and the second array represents the width and height. This relative relationship will become more clear when we create our text fields, which will be subviews of our container. Let&rsquo;s do that now using Teacup&rsquo;s handy block syntax:</p>
+
+<p>```ruby</p>
+
+<h1>in the view</h1>
+
+<p>def initWithFrame(rect)
+  super.tap do
+  # &hellip;code ommitted</p>
+
+<pre><code>@container = subview(UIView, :login_container) do
+  @email_field = subview(UITextField, :email_input)
+  @password_field = subview(UITextField, :password_input)
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  self
+end</p>
+
+<h1>in the stylesheet</h1>
+
+<p>Teacup::Stylesheet.new :login_stylesheet do
+  # &hellip;code ommitted
+  # we&rsquo;ll first define a parent input_field style from which our email and password fields
+  # will inherit common attributes
+  style :input_field,</p>
+
+<pre><code>textAlignment: UITextAlignmentCenter,
+autocapitalizationType: UITextAutocapitalizationTypeNone,
+borderStyle: UITextBorderStyleRoundedRect
+</code></pre>
+
+<p>  # now let&rsquo;s define our email and password specific attributes:
+  style :email_input, extends: :input_field,</p>
+
+<pre><code>placeholder: 'email',
+frame: [[10, 10], [160, 26]],
+returnKeyType: UIReturnKeyNext
+</code></pre>
+
+<p>  style :password_input, extends: :input_field,</p>
+
+<pre><code>placeholder: 'password',
+secureTextEntry: true,
+frame: [[10, 42], [160, 26]],
+returnKeyType: UIReturnKeyDone
+</code></pre>
+
+<p>```</p>
+
+<p>Finally, something of substance!</p>
+
+<p><img src="/images/2013-06-05-rubymotion-basics-login-screen/text_fields.png"></p>
+
+<p>However, you might notice that when we actually click into the text field, the keyboard pops up and blocks the field itself&hellip;not a great user experience. Let&rsquo;s get to work fixing that using animations, which will shift our view appropriately up and down so our user can see what they&rsquo;re typing.</p>
+
+<p>We&rsquo;ll tap into more callbacks to achieve this effect. The textFieldDidBeginEditing method is, as the name implies, triggered whenever a text field is selected for editing. We&rsquo;ll use this, and a UIView animation, to replace the container&rsquo;s frame with a new one positioned so the user can see the text fields.</p>
+
+<p>```ruby</p>
+
+<h1>in the view</h1>
+
+<p>def textFieldDidBeginEditing(textField)
+  # if we&rsquo;ve already shifted the view up, don&rsquo;t do it again
+  return if @offset</p>
+
+<p>  # grab our current frame and modify it so it&rsquo;s visible
+  container_frame = @container.frame
+  container_frame.origin.y &ndash;= 70</p>
+
+<p>  # animate the replacement of the current frame with the new one
+  UIView.animateWithDuration(0.3,</p>
+
+<pre><code>animations: lambda {
+  @container.frame = container_frame
+},
+completion: lambda { |finished|
+  @offset = true
+}
+</code></pre>
+
+<p>  )
+end
+```</p>
+
+<p>To actually get this working, we need to set our text fields' delegates to themselves. More on what this is doing (here)[<a href="http://developer.apple.com/library/ios/#documentation/General/Conceptual/DevPedia-CocoaCore/Delegation.html">http://developer.apple.com/library/ios/#documentation/General/Conceptual/DevPedia-CocoaCore/Delegation.html</a>].</p>
+
+<p>```ruby
+def initWithFrame(rect)
+  # &hellip;code ommitted</p>
+
+<pre><code>@container = subview(UIView, :login_container) do
+  @email_field = subview(UITextField, :email_input)
+  @email_field.delegate = self
+
+  @password_field = subview(UITextField, :password_input)
+  @password_field.delegate = self
+end
+</code></pre>
+
+<p>  end</p>
+
+<p>  self
+end
+```</p>
+
+<p>Now if you rake and click into one of the text fields, the fields should shift up and remain visible.</p>
+
+<p>Let&rsquo;s finish this off by implementing the reverse- if a user has finished entering info, shift the container back down. We&rsquo;ll also make it so that clicking the return button in the email field shifts the cursor to the password field. We&rsquo;ll use textFieldShouldReturn, which determines how the processing of the return button should be handled.</p>
+
+<p>```ruby
+def textFieldShouldReturn(textField)
+  # if we&rsquo;re moving from email field to password, activate the password field for editing
+  if textField == @email_field</p>
+
+<pre><code>@password_field.becomeFirstResponder
+</code></pre>
+
+<p>  else
+  # otherwise, shift the container back down</p>
+
+<pre><code>container_frame = @container.frame
+container_frame.origin.y += 70
+
+UIView.animateWithDuration(0.3,
+  animations: lambda {
+    @container.frame = container_frame
+  },
+  completion: lambda { |finished|
+    @offset = false
+  }
+)
+
+# this will hide the keyboard
+textField.resignFirstResponder
+</code></pre>
+
+<p>  end</p>
+
+<p>  false
+end</p>
+
+<p>```</p>
+
+<p>And that&rsquo;s it! Run rake and take the new login screen for a test drive. Here&rsquo;s <a href="https://github.com/mhriess/rubymotion_login">all the code in one place</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
